@@ -1,2 +1,2 @@
 # Stepuha.net
-Our first attemot at making a serious project
+Our first attempt at making a serious project
