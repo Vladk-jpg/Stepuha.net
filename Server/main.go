@@ -1,10 +1,13 @@
 package main
 
 import (
-	"fmt"
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
-	fmt.Println("jpg")
-	fmt.Println("jpg")
+	r := gin.Default()
+
+	registerRouts(r)
+
+	r.Run(":8080")
 }
