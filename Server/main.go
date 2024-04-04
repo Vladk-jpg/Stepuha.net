@@ -2,29 +2,14 @@ package main
 
 import (
 	"fmt"
-	"net"
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
-	message := "mornin'"
-	fmt.Println("jpg")
-	fmt.Println("jpg")
-	fmt.Println("TestText")
-	server, err := net.Listen("tcp", ":4545")
-
+	r := gin.Default()
+	err := r.Run(":0808")
 	if err != nil {
-		fmt.Println("Nice job! It doesn't work!")
+		fmt.Println("Ooops...")
 		return
-	}
-	defer server.Close()
-
-	for {
-		server, err := server.Accept()
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
-		server.Write([]byte(message))
-		server.Close()
 	}
 }

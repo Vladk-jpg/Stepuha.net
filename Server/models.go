@@ -7,7 +7,7 @@ type User struct {
 	Email    string
 	Password string
 	Teacher  string
-	Rating   int
+	//Rating   int
 }
 
 type Good struct {
