@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
+	"github.com/lib/pq"
 	"github.com/spf13/viper"
 	"log"
 	"os"
@@ -25,6 +26,7 @@ func main() {
 		SSLMode:  viper.GetString("db.SSLMode"),
 		Password: os.Getenv("DB_PASSWORD"),
 	})
+	fmt.Println(pq.Elog)
 	if err != nil {
 		log.Fatalf("Failed to initialize DB %s", err.Error())
 	}
