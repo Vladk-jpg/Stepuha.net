@@ -1,10 +1,10 @@
 package main
 
 type User struct {
-	ID       int
-	Name     string
-	Surname  string
-	Email    string
+	ID      int
+	Name    string
+	Surname string
+	//Email    string
 	Password string
 	Teacher  string
 	//Rating   int
