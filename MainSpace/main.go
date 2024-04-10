@@ -21,10 +21,6 @@ func main() {
 		log.Fatalf("Couldn't read the enviroment variables %s", err.Error())
 	}
 
-	repos := infrastructure.NewRepository()
-	services := service.NewService()
-	handlers := handler.NewHandler(services)
-
 	db, err := infrastructure.NewPostrgesDB(infrastructure.DbConfig{
 		Host:     viper.GetString("db.Host"),
 		Port:     viper.GetString("db.Port"),
@@ -33,11 +29,15 @@ func main() {
 		SSLMode:  viper.GetString("db.SSLMode"),
 		Password: os.Getenv("DB_PASSWORD"),
 	})
+
+	repos := infrastructure.NewRepository(db)
+	services := service.NewService(repos)
+	handlers := handler.NewHandler(services)
+
 	fmt.Println(pq.Elog)
 	if err != nil {
 		log.Fatalf("Failed to initialize DB %s", err.Error())
 	}
-	err = db.Close()
 	router := gin.Default()
 	handlers.RegisterRoutes(router)
 	err = router.Run(viper.GetString("port"))

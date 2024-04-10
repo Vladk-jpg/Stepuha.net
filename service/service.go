@@ -2,6 +2,7 @@ package service
 
 import (
 	"Stepuha.net/entities"
+	"Stepuha.net/infrastructure"
 )
 
 type Authorization interface {
@@ -12,6 +13,8 @@ type Service struct {
 	Authorization
 }
 
-func NewService() *Service {
-	return &Service{}
+func NewService(repository *infrastructure.Repository) *Service {
+	return &Service{
+		Authorization: NewAuthService(repository.Authorization),
+	}
 }

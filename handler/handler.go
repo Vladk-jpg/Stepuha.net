@@ -11,11 +11,9 @@ type Handler struct {
 	services *service.Service
 }
 
-func NewHandler(services *service.Service) *Handler {
-	return &Handler{services: services}
+func NewHandler(serv *service.Service) *Handler {
+	return &Handler{services: serv}
 }
-
-// Nah, not now. Or, perhaps?..
 
 func (handl *Handler) RegisterRoutes(router *gin.Engine) {
 	auth := router.Group("/auth")
@@ -32,7 +30,7 @@ func registerHandler(c *gin.Context) {
 	}
 
 	// Здесь вам нужно сохранить пользователя в базу данных или другое хранилище данных
-
+	// Nah, not now. Or, perhaps?..
 	// Отправка ответа об успешной регистрации
 	c.JSON(http.StatusOK, gin.H{"message": "User registered successfully"})
 }
