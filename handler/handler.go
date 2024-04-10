@@ -1,16 +1,31 @@
-package main
+package handler
 
 import (
+	"Stepuha.net/entities"
+	"Stepuha.net/service"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
 
-func registerRouts(r *gin.Engine) {
-	r.POST("/register", registerHandler)
+type Handler struct {
+	services *service.Service
+}
+
+func NewHandler(services *service.Service) *Handler {
+	return &Handler{services: services}
+}
+
+// Nah, not now. Or, perhaps?..
+
+func (handl *Handler) RegisterRoutes(router *gin.Engine) {
+	auth := router.Group("/auth")
+	{
+		auth.POST("/sign-up", handl.signUP)
+	}
 }
 
 func registerHandler(c *gin.Context) {
-	var user User
+	var user entities.User
 	if err := c.ShouldBindJSON(&user); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
