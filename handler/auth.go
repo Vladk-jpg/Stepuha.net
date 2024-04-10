@@ -8,13 +8,11 @@ import (
 
 func (handl *Handler) signUP(ctx *gin.Context) {
 	var input entities.User
-
 	if err := ctx.BindJSON(&input); err != nil {
 		newErrorResponse(ctx, http.StatusBadRequest, err.Error())
 		return
 	}
-
-	id, err := handl.services.Authorization.AddUser(input)
+	id, err := handl.services.AddUser(input)
 	if err != nil {
 		newErrorResponse(ctx, http.StatusInternalServerError, err.Error())
 		return
