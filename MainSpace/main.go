@@ -29,7 +29,6 @@ func main() {
 		SSLMode:  viper.GetString("db.SSLMode"),
 		Password: os.Getenv("DB_PASSWORD"),
 	})
-
 	repos := infrastructure.NewRepository(db)
 	services := service.NewService(repos)
 	handlers := handler.NewHandler(services)

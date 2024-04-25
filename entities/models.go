@@ -1,10 +1,11 @@
 package entities
 
 type User struct {
-	ID      int    `json:"-"`
-	Name    string `json:"name" binding:"required"`
-	Surname string `json:"surname" binding:"required"`
-	Teacher string `json:"teacher" binding:"required"`
+	ID       int    `json:"-" db:"id"`
+	Username string `json:"username" binding:"required"`
+	Name     string `json:"name" binding:"required"`
+	Surname  string `json:"surname" binding:"required"`
+	Teacher  string `json:"teacher" binding:"required"`
 	//Email    string
 	Password string `json:"password" binding:"required"`
 	//Rating   int
