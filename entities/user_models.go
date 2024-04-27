@@ -11,15 +11,6 @@ type User struct {
 	//Rating   int
 }
 
-type Good struct {
-	ID          int
-	Name        string
-	Price       float64
-	Picture     string
-	Category    string
-	Description string
-}
-
 type Cart struct {
 	UserID int
 	Goods  []Good

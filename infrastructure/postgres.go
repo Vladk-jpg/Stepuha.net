@@ -6,7 +6,9 @@ import (
 )
 
 const (
-	UsersTable = "users"
+	UsersTable      = "users"
+	GoodsTable      = "goods"
+	UsersGoodsTable = "users_goods"
 )
 
 type DbConfig struct {
