@@ -21,6 +21,10 @@ func (handl *Handler) createGood(ctx *gin.Context) {
 	if err != nil {
 		newErrorResponse(ctx, http.StatusInternalServerError, err.Error())
 	}
+	ctx.Set(goodCtx, strconv.Itoa(id))
+	ctx.Set(pictureCtx, input.Picture)
+	uploadPicture(ctx)
+
 	ctx.JSON(http.StatusOK, map[string]interface{}{
 		"id": id,
 	})

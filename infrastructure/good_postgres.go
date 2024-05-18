@@ -25,13 +25,14 @@ func (repos *GoodPostgres) Create(userId int, good entities.Good) (int, error) {
 	var id int
 	createGoodQuery := fmt.Sprintf("INSERT INTO %s (name, price, picture, description) VALUES ($1, $2, $3, $4) RETURNING id", GoodsTable)
 	row := transaction.QueryRow(createGoodQuery, good.Name, good.Price, good.Picture, good.Description)
-	if err := row.Scan(&id); err != nil {
+	if err = row.Scan(&id); err != nil {
 		rollbackErr := transaction.Rollback()
 		if rollbackErr != nil {
 			log.Fatalf("Unable to rollback the insertion into " + GoodsTable)
 		}
 		return 0, err
 	}
+
 	createUsersGoodQuery := fmt.Sprintf("INSERT INTO %s (user_id, good_id) VALUES ($1, $2)", UsersGoodsTable)
 	_, err = transaction.Exec(createUsersGoodQuery, userId, id)
 	if err != nil {
