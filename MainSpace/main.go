@@ -10,7 +10,6 @@ import (
 	"github.com/lib/pq"
 	"github.com/spf13/viper"
 	"log"
-	"net/http"
 	"os"
 )
 
@@ -40,15 +39,17 @@ func main() {
 	}
 	router := gin.Default()
 
-	router.Use(func(ctx *gin.Context) {
-		ctx.Writer.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
-		ctx.Writer.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-		ctx.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+	router.Use(func(c *gin.Context) {
+		c.Writer.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
+		c.Writer.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 
-		if ctx.Request.Method == "OPTIONS" {
-			ctx.AbortWithStatus(http.StatusBadRequest)
+		if c.Request.Method == "OPTIONS" {
+			c.AbortWithStatus(200)
 			return
 		}
+
+		c.Next()
 	})
 
 	router.Static("/img", os.Getenv("IMAGE_DIR"))
