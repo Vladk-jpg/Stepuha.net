@@ -54,7 +54,7 @@ func (repos *GoodPostgres) GetAll(userId int) ([]entities.Good, error) {
 	return goods, err
 }
 
-func (repos *GoodPostgres) GetById(userId int, goodId int) (entities.Good, error) {
+func (repos *GoodPostgres) GetGoodById(userId int, goodId int) (entities.Good, error) {
 	var good entities.Good
 	query := fmt.Sprintf("SELECT gd.id, gd.name, gd.price, gd.picture, gd.description FROM %s gd INNER JOIN %s ugd on gd.id = ugd.good_id"+
 		" WHERE ugd.user_id = $1 AND ugd.good_id = $2", GoodsTable, UsersGoodsTable)
@@ -64,8 +64,8 @@ func (repos *GoodPostgres) GetById(userId int, goodId int) (entities.Good, error
 }
 
 func (repos *GoodPostgres) Delete(userId int, goodId int) error {
-	query := fmt.Sprintf("DELETE FROM %s gd USING %s ugd WHERE gd.id = ugd.goodid AND ugd.user_id=$1 AND ugd.good_id=$2",
-		GoodsTable, UsersTable)
+	query := fmt.Sprintf("DELETE FROM %s gd USING %s ugd WHERE gd.id = ugd.good_id AND ugd.user_id=$1 AND ugd.good_id=$2",
+		GoodsTable, UsersGoodsTable)
 	_, err := repos.db.Exec(query, userId, goodId)
 	return err
 }

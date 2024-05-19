@@ -28,10 +28,14 @@ func (handl *Handler) RegisterRoutes(router *gin.Engine) {
 			userGoods.GET("/:id", handl.getGoodById)
 			userGoods.DELETE("/:id", handl.deleteGood)
 			userGoods.PUT("/:id", handl.updateGood)
-			picture := api.Group("/picture")
+			picture := userGoods.Group("/picture")
 			{
 				picture.PUT("/:id", handl.uploadPicture)
 			}
+		}
+		users := api.Group("/users")
+		{
+			users.GET("/:id", handl.getUserById)
 		}
 	}
 }

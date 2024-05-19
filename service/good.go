@@ -21,8 +21,8 @@ func (serv *GoodService) GetAll(userId int) ([]entities.Good, error) {
 	return serv.repo.GetAll(userId)
 }
 
-func (serv *GoodService) GetById(userId int, goodId int) (entities.Good, error) {
-	return serv.repo.GetById(userId, goodId)
+func (serv *GoodService) GetGoodById(userId int, goodId int) (entities.Good, error) {
+	return serv.repo.GetGoodById(userId, goodId)
 }
 
 func (serv *GoodService) Delete(userId int, goodId int) error {

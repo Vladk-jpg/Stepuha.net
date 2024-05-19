@@ -59,7 +59,7 @@ func (handl *Handler) getGoodById(ctx *gin.Context) {
 		newErrorResponse(ctx, http.StatusBadRequest, "invalid id number")
 	}
 
-	good, err := handl.services.GetById(userId, id)
+	good, err := handl.services.GetGoodById(userId, id)
 	if err != nil {
 		newErrorResponse(ctx, http.StatusInternalServerError, err.Error())
 		return
