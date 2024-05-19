@@ -94,7 +94,7 @@ func (repos *GoodPostgres) Update(userId int, goodId int, input entities.UpdateG
 	}
 
 	if input.Description != nil {
-		setValues = append(setValues, fmt.Sprintf("name=$%d", argId))
+		setValues = append(setValues, fmt.Sprintf("description=$%d", argId))
 		args = append(args, *input.Description)
 		argId++
 	}

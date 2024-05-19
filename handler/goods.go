@@ -105,6 +105,7 @@ func (handl *Handler) updateGood(ctx *gin.Context) {
 		return
 	}
 	if err = handl.services.Update(userId, id, input); err != nil {
+		newErrorResponse(ctx, http.StatusInternalServerError, err.Error())
 		return
 	}
 	ctx.JSON(http.StatusOK, statusResponse{

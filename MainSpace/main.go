@@ -46,7 +46,7 @@ func main() {
 		ctx.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 
 		if ctx.Request.Method == "OPTIONS" {
-			ctx.AbortWithStatus(http.StatusBadRequest)
+			ctx.AbortWithStatus(http.StatusOK)
 			return
 		}
 	})
