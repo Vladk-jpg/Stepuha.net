@@ -23,11 +23,15 @@ func (handl *Handler) RegisterRoutes(router *gin.Engine) {
 	{
 		userGoods := api.Group("/goods")
 		{
-			userGoods.POST("/picture", handl.createGood)
+			userGoods.POST("/", handl.createGood)
 			userGoods.GET("/", handl.getAllGoods)
 			userGoods.GET("/:id", handl.getGoodById)
 			userGoods.DELETE("/:id", handl.deleteGood)
 			userGoods.PUT("/:id", handl.updateGood)
+			picture := api.Group("/picture")
+			{
+				picture.PUT("/:id", handl.uploadPicture)
+			}
 		}
 	}
 }

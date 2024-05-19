@@ -16,6 +16,7 @@ type Good interface {
 	GetById(userId int, goodId int) (entities.Good, error)
 	Delete(userId int, goodId int) error
 	Update(userId int, goodId int, input entities.UpdateGoodInput) error
+	CheckBelonging(userId int, goodId int) error
 }
 
 type Repository struct {

@@ -17,13 +17,11 @@ func (handl *Handler) createGood(ctx *gin.Context) {
 		newErrorResponse(ctx, http.StatusBadRequest, err.Error())
 		return
 	}
+
 	id, err := handl.services.Create(userId, input)
 	if err != nil {
 		newErrorResponse(ctx, http.StatusInternalServerError, err.Error())
 	}
-	ctx.Set(goodCtx, strconv.Itoa(id))
-	ctx.Set(pictureCtx, input.Picture)
-	uploadPicture(ctx)
 
 	ctx.JSON(http.StatusOK, map[string]interface{}{
 		"id": id,

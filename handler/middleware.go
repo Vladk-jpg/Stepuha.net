@@ -2,12 +2,8 @@ package handler
 
 import (
 	"errors"
-	"fmt"
 	"github.com/gin-gonic/gin"
-	"io"
-	"mime/multipart"
 	"net/http"
-	"os"
 	"strings"
 )
 
@@ -15,7 +11,6 @@ const (
 	authorizationHandler = "Authorization"
 	userCtx              = "userId"
 	goodCtx              = "goodId"
-	pictureCtx           = "picture"
 )
 
 func (handl *Handler) userIdentity(ctx *gin.Context) {
@@ -52,61 +47,24 @@ func getUserId(ctx *gin.Context) (int, error) {
 	return idInt, nil
 }
 
-func uploadPicture(ctx *gin.Context) string {
-	goodId, _ := ctx.Get(goodCtx)
-	path := fmt.Sprintf("%s/image/%s", os.Getenv("PICTURE_DIR"), goodId)
-	err := os.MkdirAll(path, os.ModePerm)
-	if err != nil {
-		newErrorResponse(ctx, http.StatusInternalServerError, "Error creating directory")
-		return ""
+func getGoodId(ctx *gin.Context) (int, error) {
+	id, ok := ctx.Get(goodCtx)
+	if !ok {
+		newErrorResponse(ctx, http.StatusInternalServerError, "good is not found")
+		return 0, errors.New("good id not found")
 	}
-	form, err := ctx.MultipartForm()
-	if err != nil {
-		newErrorResponse(ctx, http.StatusInternalServerError, err.Error())
-		return ""
+	idInt, ok := id.(int)
+	if !ok {
+		newErrorResponse(ctx, http.StatusInternalServerError, "good id not found")
+		return 0, errors.New("good id not found")
 	}
-	var filename string
-	imgExt := "jpg"
-	for header := range form.File {
-		filename = header
+	return idInt, nil
+}
 
-		arr := strings.Split(filename, ".")
-		if len(arr) > 1 {
-			imgExt = arr[len(arr)-1]
-		}
-	}
-	file, _, err := ctx.Request.FormFile(filename)
+func (handl *Handler) checkBelonging(userId int, goodId int) error {
+	err := handl.services.CheckBelonging(userId, goodId)
 	if err != nil {
-		newErrorResponse(ctx, http.StatusBadRequest, err.Error())
-		return ""
+		return err
 	}
-	defer func(file multipart.File) {
-		err = file.Close()
-		if err != nil {
-			logger.Print("Can't close a file %s", err)
-		}
-	}(file)
-
-	fileBytes, err := io.ReadAll(file)
-	if err != nil {
-		newErrorResponse(ctx, http.StatusBadRequest, err.Error())
-	}
-
-	fullFileName := fmt.Sprintf("%s.%s", randomFileName(), imgExt)
-	fileOnDisk, err := os.Create(fmt.Sprintf("%s/%s", path, fullFileName))
-	if err != nil {
-		newErrorResponse(ctx, http.StatusBadRequest, err.Error())
-	}
-	defer func(fileOnDisk *os.File) {
-		err := fileOnDisk.Close()
-		if err != nil {
-			logger.Print("can't close a file on disk")
-		}
-	}(fileOnDisk)
-
-	_, err = fileOnDisk.Write(fileBytes)
-	if err != nil {
-		newErrorResponse(ctx, http.StatusBadRequest, err.Error())
-	}
-	return fmt.Sprintf(fullFileName)
+	return nil
 }
