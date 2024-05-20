@@ -49,6 +49,7 @@ func main() {
 			ctx.AbortWithStatus(http.StatusOK)
 			return
 		}
+		ctx.Next()
 	})
 
 	router.Static("/img", os.Getenv("IMAGE_DIR"))

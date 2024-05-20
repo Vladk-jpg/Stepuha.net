@@ -6,9 +6,15 @@ type User struct {
 	Name     string `json:"name" db:"name" binding:"required" `
 	Surname  string `json:"surname" db:"surname" binding:"required"`
 	Teacher  string `json:"teacher" db:"teacher" binding:"required" `
-	//Email    string
 	Password string `json:"password" db:"password_hash" binding:"required"`
-	//Rating   int
+}
+
+type UpdateUserInput struct {
+	Username *string `json:"username"`
+	Name     *string `json:"name"`
+	Surname  *string `json:"surname"`
+	Teacher  *string `json:"teacher"`
+	Password *string `json:"password"`
 }
 
 type Cart struct {

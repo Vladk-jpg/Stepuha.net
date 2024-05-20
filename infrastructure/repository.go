@@ -21,6 +21,7 @@ type Good interface {
 
 type User interface {
 	GetUserById(userId int) (entities.User, error)
+	UpdateUser(userId int, input entities.UpdateUserInput) error
 }
 
 type Repository struct {

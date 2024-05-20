@@ -36,6 +36,8 @@ func (handl *Handler) RegisterRoutes(router *gin.Engine) {
 		users := api.Group("/users")
 		{
 			users.GET("/:id", handl.getUserById)
+			users.GET("/", handl.getYourUser)
+			users.PUT("/", handl.updateUser)
 		}
 	}
 }
