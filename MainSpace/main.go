@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
-	"github.com/lib/pq"
+	_ "github.com/lib/pq"
 	"github.com/spf13/viper"
 	"log"
 	"net/http"
@@ -34,7 +34,6 @@ func main() {
 	services := service.NewService(repos)
 	handlers := handler.NewHandler(services)
 
-	fmt.Println(pq.Elog)
 	if err != nil {
 		log.Fatalf("Failed to initialize DB %s", err.Error())
 	}
@@ -52,9 +51,8 @@ func main() {
 		ctx.Next()
 	})
 
-	router.Static("/img", os.Getenv("IMAGE_DIR"))
-
 	handlers.RegisterRoutes(router)
+	router.Static("/img", string(os.Getenv("PICTURE_DIR")))
 	err = router.Run(viper.GetString("port"))
 	if err != nil {
 		fmt.Println("Oops...")
