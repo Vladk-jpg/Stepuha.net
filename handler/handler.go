@@ -19,6 +19,7 @@ func (handl *Handler) RegisterRoutes(router *gin.Engine) {
 		auth.POST("/sign-up", handl.signUp)
 		auth.POST("/sign-in", handl.signIn)
 	}
+
 	api := router.Group("/api", handl.userIdentity)
 	{
 		userGoods := api.Group("/goods")
@@ -39,5 +40,10 @@ func (handl *Handler) RegisterRoutes(router *gin.Engine) {
 			users.GET("/", handl.getYourUser)
 			users.PUT("/", handl.updateUser)
 		}
+	}
+
+	suppApi := api.Group("/supp")
+	{
+		suppApi.GET("/rnd", handl.getRandomGoods)
 	}
 }

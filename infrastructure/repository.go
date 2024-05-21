@@ -24,10 +24,15 @@ type User interface {
 	UpdateUser(userId int, input entities.UpdateUserInput) error
 }
 
+type Supplementary interface {
+	GetRandomGoods(userId int) ([]entities.Good, error)
+}
+
 type Repository struct {
 	Authorization
 	Good
 	User
+	Supplementary
 }
 
 func NewRepository(db *sqlx.DB) *Repository {
@@ -35,5 +40,6 @@ func NewRepository(db *sqlx.DB) *Repository {
 		Authorization: NewAuthPostgres(db),
 		Good:          NewGoodPostgres(db),
 		User:          NewUserPostgres(db),
+		Supplementary: NewSupplementaryPostgres(db),
 	}
 }

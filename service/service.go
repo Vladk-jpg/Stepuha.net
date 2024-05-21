@@ -25,10 +25,15 @@ type User interface {
 	UpdateUser(userId int, input entities.UpdateUserInput) error
 }
 
+type Supplementary interface {
+	GetRandomGoods(userId int) ([]entities.Good, error)
+}
+
 type Service struct {
 	Authorization
 	Good
 	User
+	Supplementary
 }
 
 func NewService(repository *infrastructure.Repository) *Service {
@@ -36,5 +41,6 @@ func NewService(repository *infrastructure.Repository) *Service {
 		Authorization: NewAuthService(repository.Authorization),
 		Good:          NewGoodService(repository.Good),
 		User:          NewUserService(repository.User),
+		Supplementary: NewSupplementaryService(repository.Supplementary),
 	}
 }

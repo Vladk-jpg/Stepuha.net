@@ -52,7 +52,7 @@ func main() {
 	})
 
 	handlers.RegisterRoutes(router)
-	router.Static("/img", string(os.Getenv("PICTURE_DIR")))
+	router.Static("/img", os.Getenv("PICTURE_DIR"))
 	err = router.Run(viper.GetString("port"))
 	if err != nil {
 		fmt.Println("Oops...")
