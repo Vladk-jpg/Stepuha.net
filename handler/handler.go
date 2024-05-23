@@ -47,4 +47,9 @@ func (handl *Handler) RegisterRoutes(router *gin.Engine) {
 		suppApi.GET("/rnd", handl.getRandomGoods)
 		suppApi.POST("/:id/:amount", handl.transferMoney)
 	}
+
+	moderApi := api.Group("/mod")
+	{
+		moderApi.POST("freeze/:id", handl.freezeUser)
+	}
 }

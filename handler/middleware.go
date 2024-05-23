@@ -10,7 +10,6 @@ import (
 const (
 	authorizationHandler = "Authorization"
 	userCtx              = "userId"
-	goodCtx              = "goodId"
 )
 
 func (handl *Handler) userIdentity(ctx *gin.Context) {
@@ -43,20 +42,6 @@ func getUserId(ctx *gin.Context) (int, error) {
 	if !ok {
 		newErrorResponse(ctx, http.StatusInternalServerError, "user is not found")
 		return 0, errors.New("user id not found")
-	}
-	return idInt, nil
-}
-
-func getGoodId(ctx *gin.Context) (int, error) {
-	id, ok := ctx.Get(goodCtx)
-	if !ok {
-		newErrorResponse(ctx, http.StatusInternalServerError, "good is not found")
-		return 0, errors.New("good id not found")
-	}
-	idInt, ok := id.(int)
-	if !ok {
-		newErrorResponse(ctx, http.StatusInternalServerError, "good id not found")
-		return 0, errors.New("good id not found")
 	}
 	return idInt, nil
 }

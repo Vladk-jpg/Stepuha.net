@@ -27,12 +27,18 @@ type User interface {
 type Supplementary interface {
 	GetRandomGoods(userId int) ([]entities.Good, error)
 	TransferMoney(senderId int, receiverId int, amount float64) error
+	CheckIfModer(userId int) (bool, error)
+}
+
+type Moder interface {
+	FreezeUser(userId int) error
 }
 
 type Repository struct {
 	Authorization
 	Good
 	User
+	Moder
 	Supplementary
 }
 
@@ -42,5 +48,6 @@ func NewRepository(db *sqlx.DB) *Repository {
 		Good:          NewGoodPostgres(db),
 		User:          NewUserPostgres(db),
 		Supplementary: NewSupplementaryPostgres(db),
+		Moder:         NewModerPostgres(db),
 	}
 }

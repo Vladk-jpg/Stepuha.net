@@ -1,12 +1,15 @@
 package entities
 
 type User struct {
-	ID       int    `json:"-" db:"id"`
-	Username string `json:"username" db:"username" binding:"required" `
-	Name     string `json:"name" db:"name" binding:"required" `
-	Surname  string `json:"surname" db:"surname" binding:"required"`
-	Teacher  string `json:"teacher" db:"teacher" binding:"required" `
-	Password string `json:"password" db:"password_hash" binding:"required"`
+	ID          int    `json:"-" db:"id"`
+	Username    string `json:"username" db:"username" binding:"required" `
+	Name        string `json:"name" db:"name" binding:"required" `
+	Surname     string `json:"surname" db:"surname" binding:"required"`
+	Teacher     string `json:"teacher" db:"teacher" binding:"required" `
+	Password    string `json:"password" db:"password_hash" binding:"required"`
+	Money       int    `json:"-" db:"money"`
+	IsModerator bool   `json:"-" db:"is_moderator"`
+	IsFrozen    bool   `json:"-" db:"is_frozen"`
 }
 
 type UpdateUserInput struct {
@@ -15,21 +18,4 @@ type UpdateUserInput struct {
 	Surname  *string `json:"surname"`
 	Teacher  *string `json:"teacher"`
 	Password *string `json:"password"`
-}
-
-type Cart struct {
-	UserID int
-	Goods  []Good
-}
-
-type favorites struct {
-	UserID int
-	Goods  []Good
-}
-
-type Order struct {
-	ID       int
-	SellerID int
-	BuyerID  int
-	Goods    []Good
 }

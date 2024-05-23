@@ -28,12 +28,18 @@ type User interface {
 type Supplementary interface {
 	GetRandomGoods(userId int) ([]entities.Good, error)
 	TransferMoney(senderId int, receiver int, amount float64) error
+	CheckIfModer(userId int) (bool, error)
+}
+
+type Moder interface {
+	FreezeUser(userId int) error
 }
 
 type Service struct {
 	Authorization
 	Good
 	User
+	Moder
 	Supplementary
 }
 
@@ -43,5 +49,6 @@ func NewService(repository *infrastructure.Repository) *Service {
 		Good:          NewGoodService(repository.Good),
 		User:          NewUserService(repository.User),
 		Supplementary: NewSupplementaryService(repository.Supplementary),
+		Moder:         NewModerService(repository.Moder),
 	}
 }
