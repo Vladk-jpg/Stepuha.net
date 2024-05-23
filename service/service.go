@@ -27,6 +27,7 @@ type User interface {
 
 type Supplementary interface {
 	GetRandomGoods(userId int) ([]entities.Good, error)
+	TransferMoney(senderId int, receiver int, amount float64) error
 }
 
 type Service struct {

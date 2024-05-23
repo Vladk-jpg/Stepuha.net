@@ -45,5 +45,6 @@ func (handl *Handler) RegisterRoutes(router *gin.Engine) {
 	suppApi := api.Group("/supp")
 	{
 		suppApi.GET("/rnd", handl.getRandomGoods)
+		suppApi.POST("/:id/:amount", handl.transferMoney)
 	}
 }

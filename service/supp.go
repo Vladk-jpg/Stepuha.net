@@ -16,3 +16,7 @@ func NewSupplementaryService(repo infrastructure.Supplementary) *SupplementarySe
 func (serv *SupplementaryService) GetRandomGoods(userId int) ([]entities.Good, error) {
 	return serv.repo.GetRandomGoods(userId)
 }
+
+func (serv *SupplementaryService) TransferMoney(senderId int, receiverId int, amount float64) error {
+	return serv.repo.TransferMoney(senderId, receiverId, amount)
+}
