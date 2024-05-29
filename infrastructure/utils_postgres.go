@@ -26,3 +26,25 @@ func (repos *SupplementaryPostgres) CheckIfModer(userId int) (bool, error) {
 	}
 	return isModer, nil
 }
+
+func (repos *SupplementaryPostgres) GetOwner(goodId int) (int, error) {
+	query := fmt.Sprintf("SELECT id FROM %s WHERE good_id = $1", UsersGoodsTable)
+	var ownerId int
+	err := repos.db.Get(&ownerId, query, goodId)
+	if err != nil {
+		return -1, err
+	}
+
+	return ownerId, nil
+}
+
+func (repos *SupplementaryPostgres) CheckIfFrozen(userId int) (bool, error) {
+	query := fmt.Sprintf("SELECT gd.is_frozen FROM %s WHERE gd.id = $1", UsersTable)
+	var isFrozen bool
+	err := repos.db.Get(&isFrozen, query, userId)
+	print(isFrozen)
+	if err != nil {
+		return false, err
+	}
+	return isFrozen, nil
+}

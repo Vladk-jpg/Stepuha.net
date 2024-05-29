@@ -20,3 +20,7 @@ func (serv *SupplementaryService) GetRandomGoods(userId int) ([]entities.Good, e
 func (serv *SupplementaryService) TransferMoney(senderId int, receiverId int, amount float64) error {
 	return serv.repo.TransferMoney(senderId, receiverId, amount)
 }
+
+func (serv *SupplementaryService) CheckIfFrozen(userId int) (bool, error) {
+	return serv.repo.CheckIfFrozen(userId)
+}

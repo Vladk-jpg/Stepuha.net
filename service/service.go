@@ -29,6 +29,8 @@ type Supplementary interface {
 	GetRandomGoods(userId int) ([]entities.Good, error)
 	TransferMoney(senderId int, receiver int, amount float64) error
 	CheckIfModer(userId int) (bool, error)
+	CheckIfFrozen(userId int) (bool, error)
+	GetOwner(goodId int) (int, error)
 }
 
 type Moder interface {

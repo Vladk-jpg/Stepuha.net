@@ -51,12 +51,14 @@ func (handl *Handler) getAllGoods(ctx *gin.Context) {
 func (handl *Handler) getGoodById(ctx *gin.Context) {
 	userId, err := getUserId(ctx)
 	if err != nil {
+		newErrorResponse(ctx, http.StatusInternalServerError, err.Error())
 		return
 	}
 
 	id, err := strconv.Atoi(ctx.Param("id"))
 	if err != nil {
 		newErrorResponse(ctx, http.StatusBadRequest, "invalid id number")
+		return
 	}
 
 	good, err := handl.services.GetGoodById(userId, id)
@@ -64,6 +66,7 @@ func (handl *Handler) getGoodById(ctx *gin.Context) {
 		newErrorResponse(ctx, http.StatusInternalServerError, err.Error())
 		return
 	}
+
 	ctx.JSON(http.StatusOK, good)
 }
 
@@ -108,6 +111,7 @@ func (handl *Handler) updateGood(ctx *gin.Context) {
 		newErrorResponse(ctx, http.StatusInternalServerError, err.Error())
 		return
 	}
+
 	ctx.JSON(http.StatusOK, statusResponse{
 		Status: "ok",
 	})

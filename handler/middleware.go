@@ -22,6 +22,7 @@ func (handl *Handler) userIdentity(ctx *gin.Context) {
 	headerParts := strings.Split(header, " ")
 	if len(headerParts) != 2 {
 		newErrorResponse(ctx, http.StatusUnauthorized, "Invalid authorization header")
+		return
 	}
 
 	userId, err := handl.services.Authorization.ParseToken(headerParts[1])
@@ -29,6 +30,11 @@ func (handl *Handler) userIdentity(ctx *gin.Context) {
 		newErrorResponse(ctx, http.StatusUnauthorized, err.Error())
 		return
 	}
+	if !handl.checkIfFrozen(userId) {
+		newErrorResponse(ctx, http.StatusUnauthorized, "Frozen")
+		return
+	}
+
 	ctx.Set(userCtx, userId)
 }
 
@@ -43,6 +49,7 @@ func getUserId(ctx *gin.Context) (int, error) {
 		newErrorResponse(ctx, http.StatusInternalServerError, "user is not found")
 		return 0, errors.New("user id not found")
 	}
+
 	return idInt, nil
 }
 
@@ -52,4 +59,12 @@ func (handl *Handler) checkBelonging(userId int, goodId int) error {
 		return err
 	}
 	return nil
+}
+
+func (handl *Handler) checkIfFrozen(userId int) bool {
+	isFrozen, err := handl.services.CheckIfFrozen(userId)
+	if err != nil {
+		return true
+	}
+	return isFrozen
 }
