@@ -42,7 +42,7 @@ func (repos *SupplementaryPostgres) TransferMoney(senderId int, receiverId int, 
 		if transactionErr != nil {
 			return transactionErr
 		}
-		return errors.New("couldn't send money from user")
+		return err
 	}
 
 	if err != nil {

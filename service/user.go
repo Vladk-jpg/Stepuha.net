@@ -13,7 +13,7 @@ func (serv *UserService) GetUserById(userId int) (entities.User, error) {
 	return serv.repo.GetUserById(userId)
 }
 
-func (serv *UserService) GetYourUser(userId int) (entities.User, error) {
+func (serv *UserService) GetYourUser(userId int) (entities.YourUser, error) {
 	return serv.repo.GetYourUser(userId)
 }
 

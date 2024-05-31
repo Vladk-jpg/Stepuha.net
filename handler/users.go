@@ -34,10 +34,10 @@ func (handl *Handler) getYourUser(ctx *gin.Context) {
 		newErrorResponse(ctx, http.StatusBadRequest, "invalid user id")
 		return
 	}
-	var user entities.User
+	var user entities.YourUser
 	user, err = handl.services.GetYourUser(id)
 	if err != nil {
-		newErrorResponse(ctx, http.StatusNotFound, "user not found")
+		newErrorResponse(ctx, http.StatusInternalServerError, err.Error())
 		return
 	}
 	ctx.JSON(http.StatusOK, user)

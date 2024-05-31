@@ -22,7 +22,7 @@ type Good interface {
 
 type User interface {
 	GetUserById(userId int) (entities.User, error)
-	GetYourUser(userId int) (entities.User, error)
+	GetYourUser(userId int) (entities.YourUser, error)
 	UpdateUser(userId int, input entities.UpdateUserInput) error
 }
 
