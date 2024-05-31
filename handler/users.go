@@ -20,6 +20,10 @@ func (handl *Handler) getUserById(ctx *gin.Context) {
 		return
 	}
 	user, err = handl.services.GetUserById(id)
+	if err != nil {
+		newErrorResponse(ctx, http.StatusNotFound, err.Error())
+		return
+	}
 
 	ctx.JSON(http.StatusOK, user)
 }
@@ -31,7 +35,7 @@ func (handl *Handler) getYourUser(ctx *gin.Context) {
 		return
 	}
 	var user entities.User
-	user, err = handl.services.GetUserById(id)
+	user, err = handl.services.GetYourUser(id)
 	if err != nil {
 		newErrorResponse(ctx, http.StatusNotFound, "user not found")
 		return

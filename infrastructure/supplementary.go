@@ -24,7 +24,7 @@ func (repos *SupplementaryPostgres) GetRandomGoods(userId int) ([]entities.Good,
 	return goods, err
 }
 
-func (repos *SupplementaryPostgres) TransferMoney(senderId int, receiverId int, amount float64) error {
+func (repos *SupplementaryPostgres) TransferMoney(senderId int, receiverId int, amount int) error {
 	tx, err := repos.db.Begin()
 	if err != nil {
 		return err

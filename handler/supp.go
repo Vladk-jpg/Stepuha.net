@@ -39,7 +39,7 @@ func (handl *Handler) transferMoney(ctx *gin.Context) {
 		newErrorResponse(ctx, http.StatusBadRequest, "invalid id of receiver")
 		return
 	}
-	amount, err := strconv.ParseFloat(ctx.Param("amount"), 64)
+	amount, err := strconv.Atoi(ctx.Param("amount"))
 	if err != nil {
 		newErrorResponse(ctx, http.StatusBadRequest, "invalid amount of money")
 		return

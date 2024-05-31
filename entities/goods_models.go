@@ -3,11 +3,11 @@ package entities
 import "errors"
 
 type Good struct {
-	ID          int     `json:"id" db:"id"`
-	Name        string  `json:"name" db:"name" binding:"required"`
-	Price       float64 `json:"price" db:"price" binding:"required"`
-	Picture     string  `json:"picture" db:"picture"`
-	Description string  `json:"description" db:"description" binding:"required"`
+	ID          int    `json:"id" db:"id"`
+	Name        string `json:"name" db:"name" binding:"required"`
+	Price       int    `json:"price" db:"price" binding:"required"`
+	Picture     string `json:"picture" db:"picture"`
+	Description string `json:"description" db:"description" binding:"required"`
 }
 
 type UpdateGoodInput struct {

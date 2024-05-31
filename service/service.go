@@ -22,12 +22,13 @@ type Good interface {
 
 type User interface {
 	GetUserById(userId int) (entities.User, error)
+	GetYourUser(userId int) (entities.User, error)
 	UpdateUser(userId int, input entities.UpdateUserInput) error
 }
 
 type Supplementary interface {
 	GetRandomGoods(userId int) ([]entities.Good, error)
-	TransferMoney(senderId int, receiver int, amount float64) error
+	TransferMoney(senderId int, receiver int, amount int) error
 	CheckIfModer(userId int) (bool, error)
 	CheckIfFrozen(userId int) (bool, error)
 	GetOwner(goodId int) (int, error)
