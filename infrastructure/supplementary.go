@@ -30,7 +30,7 @@ func (repos *SupplementaryPostgres) TransferMoney(senderId int, receiverId int, 
 		return err
 	}
 
-	sendMoneyQuery := fmt.Sprintf("UPDATE %s SET money = money - $1 WHERE id = $2 AND money > 0", UsersTable)
+	sendMoneyQuery := fmt.Sprintf("UPDATE %s SET money = money - $1 WHERE id = $2 AND money - $1 > 0", UsersTable)
 	rows, err := tx.Exec(sendMoneyQuery, amount, senderId)
 
 	if rows == nil {
