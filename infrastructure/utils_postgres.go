@@ -28,7 +28,7 @@ func (repos *SupplementaryPostgres) CheckIfModer(userId int) (bool, error) {
 }
 
 func (repos *SupplementaryPostgres) GetOwner(goodId int) (int, error) {
-	query := fmt.Sprintf("SELECT id FROM %s WHERE good_id = $1", UsersGoodsTable)
+	query := fmt.Sprintf("SELECT user_id FROM %s WHERE good_id = $1", UsersGoodsTable)
 	var ownerId int
 	err := repos.db.Get(&ownerId, query, goodId)
 	if err != nil {

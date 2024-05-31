@@ -53,3 +53,20 @@ func (handl *Handler) transferMoney(ctx *gin.Context) {
 		Status: "Ok",
 	})
 }
+
+func (handl *Handler) getOwner(ctx *gin.Context) {
+	goodId, err := strconv.Atoi(ctx.Param("id"))
+	if err != nil {
+		newErrorResponse(ctx, http.StatusBadRequest, "invalid id")
+		return
+	}
+
+	ownerId, err := handl.services.GetOwner(goodId)
+	if err != nil {
+		newErrorResponse(ctx, http.StatusInternalServerError, err.Error())
+		return
+	}
+	ctx.JSON(http.StatusOK, map[string]interface{}{
+		"id": ownerId,
+	})
+}
