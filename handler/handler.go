@@ -25,6 +25,7 @@ func (handl *Handler) RegisterRoutes(router *gin.Engine) {
 		userGoods := api.Group("/goods")
 		{
 			userGoods.POST("/", handl.createGood)
+			userGoods.POST("/buy/:id", handl.buyGood)
 			userGoods.GET("/", handl.getAllGoods)
 			userGoods.GET("/:id", handl.getGoodById)
 			userGoods.DELETE("/:id", handl.deleteGood)

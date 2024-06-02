@@ -17,7 +17,6 @@ func NewSupplementaryPostgres(db *sqlx.DB) *SupplementaryPostgres {
 
 func (repos *SupplementaryPostgres) GetRandomGoods(userId int) ([]entities.Good, error) {
 	var goods []entities.Good
-	print(userId)
 	query := fmt.Sprintf("SELECT gd.id, gd.name, gd.price, gd.picture, gd.description FROM %s gd, %s ugd WHERE ugd.user_id <> $1 AND ugd.good_id = gd.id ORDER BY RANDOM() LIMIT 15", GoodsTable, UsersGoodsTable)
 	err := repos.db.Select(&goods, query, userId)
 

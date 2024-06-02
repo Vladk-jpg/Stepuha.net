@@ -17,6 +17,7 @@ type Good interface {
 	GetGoodById(userId int, goodId int) (entities.Good, error)
 	Delete(userId int, goodId int) error
 	Update(userId int, goodId int, input entities.UpdateGoodInput) error
+	Buy(userId int, goodId int) error
 	CheckBelonging(userId int, goodId int) error
 }
 

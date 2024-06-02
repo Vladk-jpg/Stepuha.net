@@ -39,3 +39,7 @@ func (serv *GoodService) Update(userId int, goodId int, input entities.UpdateGoo
 	}
 	return nil
 }
+
+func (serv *GoodService) Buy(userId int, goodId int) error {
+	return serv.repo.Buy(userId, goodId)
+}

@@ -17,6 +17,7 @@ type Good interface {
 	Delete(userId int, goodId int) error
 	Update(userId int, goodId int, input entities.UpdateGoodInput) error
 	CheckBelonging(userId int, goodId int) error
+	Buy(userId int, goodId int) error
 }
 
 type User interface {

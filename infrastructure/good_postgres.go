@@ -2,6 +2,7 @@ package infrastructure
 
 import (
 	"Stepuha.net/entities"
+	"errors"
 	"fmt"
 	"github.com/jmoiron/sqlx"
 	"log"
@@ -109,4 +110,93 @@ func (repos *GoodPostgres) Update(userId int, goodId int, input entities.UpdateG
 		return err
 	}
 	return nil
+}
+
+func (repos *GoodPostgres) Buy(userId int, goodId int) error {
+	BuyingTx, err := repos.db.Begin()
+	if err != nil {
+		return err
+	}
+
+	var costOfGood int
+	getCostQuery := fmt.Sprintf("SELECT gd.price FROM %s gd WHERE gd.id=$1", GoodsTable)
+	err = repos.db.Get(&costOfGood, getCostQuery, goodId)
+	if err != nil {
+		txErr := BuyingTx.Rollback()
+		if txErr != nil {
+			return txErr
+		}
+		return err
+	}
+
+	var goodOwnerId int
+
+	getOwnerIdQuery := fmt.Sprintf("SELECT user_id FROM %s WHERE good_id=$1", UsersGoodsTable)
+	err = repos.db.Get(&goodOwnerId, getOwnerIdQuery, goodId)
+
+	if err != nil {
+		txErr := BuyingTx.Rollback()
+		if txErr != nil {
+			return txErr
+		}
+		return err
+	}
+
+	sendMoneyQuery := fmt.Sprintf("UPDATE %s SET money = money - $1 WHERE id = $2 AND money - $1 > 0", UsersTable)
+	rows, err := BuyingTx.Exec(sendMoneyQuery, costOfGood, userId)
+
+	if rows == nil {
+		return errors.New("couldn't send money from user")
+	}
+	affectedRow, err := rows.RowsAffected()
+	if affectedRow == 0 {
+		transactionErr := BuyingTx.Rollback()
+		if transactionErr != nil {
+			return transactionErr
+		}
+		return errors.New("user does not exist or does not have enough money")
+	}
+
+	if err != nil {
+		transactionErr := BuyingTx.Rollback()
+		if transactionErr != nil {
+			return transactionErr
+		}
+		return err
+	}
+
+	receiveMoneyQuery := fmt.Sprintf("UPDATE %s SET money = money + $1 WHERE id = $2", UsersTable)
+	rows, err = BuyingTx.Exec(receiveMoneyQuery, costOfGood, goodOwnerId)
+
+	if rows == nil {
+		return errors.New("couldn't find the receiver")
+	}
+
+	affectedRow, err = rows.RowsAffected()
+	if affectedRow == 0 {
+		transactionErr := BuyingTx.Rollback()
+		if transactionErr != nil {
+			return transactionErr
+		}
+		return errors.New("couldn't send money from user")
+	}
+
+	if err != nil {
+		transactionErr := BuyingTx.Rollback()
+		if transactionErr != nil {
+			return transactionErr
+		}
+		return err
+	}
+
+	err = repos.Delete(goodOwnerId, goodId)
+	if err != nil {
+		transactionErr := BuyingTx.Rollback()
+		if transactionErr != nil {
+			return transactionErr
+		}
+		return err
+	}
+
+	return BuyingTx.Commit()
 }

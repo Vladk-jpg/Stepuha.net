@@ -1,5 +1,7 @@
 package entities
 
+import "errors"
+
 type User struct {
 	ID          int    `json:"-" db:"id"`
 	Username    string `json:"username" db:"username" binding:"required" `
@@ -29,4 +31,13 @@ type YourUser struct {
 	Money       int    `json:"money" db:"money" binding:"-"`
 	IsModerator bool   `json:"-" db:"is_moderator"`
 	IsFrozen    bool   `json:"-" db:"is_frozen"`
+}
+
+func (input UpdateUserInput) Validate() error {
+	if input.Name == nil && input.Surname == nil {
+		if input.Teacher == nil && input.Password == nil {
+			return errors.New("update structure has no values")
+		}
+	}
+	return nil
 }

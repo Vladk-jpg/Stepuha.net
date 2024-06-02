@@ -73,6 +73,7 @@ func (handl *Handler) getGoodById(ctx *gin.Context) {
 func (handl *Handler) deleteGood(ctx *gin.Context) {
 	userId, err := getUserId(ctx)
 	if err != nil {
+		newErrorResponse(ctx, http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -94,7 +95,7 @@ func (handl *Handler) deleteGood(ctx *gin.Context) {
 func (handl *Handler) updateGood(ctx *gin.Context) {
 	userId, err := getUserId(ctx)
 	if err != nil {
-		return
+		newErrorResponse(ctx, http.StatusInternalServerError, err.Error())
 	}
 
 	id, err := strconv.Atoi(ctx.Param("id"))
@@ -108,6 +109,29 @@ func (handl *Handler) updateGood(ctx *gin.Context) {
 		return
 	}
 	if err = handl.services.Update(userId, id, input); err != nil {
+		newErrorResponse(ctx, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	ctx.JSON(http.StatusOK, statusResponse{
+		Status: "ok",
+	})
+}
+
+func (handl *Handler) buyGood(ctx *gin.Context) {
+	userId, err := getUserId(ctx)
+	if err != nil {
+		newErrorResponse(ctx, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	goodId, err := strconv.Atoi(ctx.Param("id"))
+	if err != nil {
+		newErrorResponse(ctx, http.StatusBadRequest, "invalid id number")
+		return
+	}
+
+	if err = handl.services.Buy(userId, goodId); err != nil {
 		newErrorResponse(ctx, http.StatusInternalServerError, err.Error())
 		return
 	}
