@@ -18,6 +18,9 @@ func (serv *UserService) GetYourUser(userId int) (entities.YourUser, error) {
 }
 
 func (serv *UserService) UpdateUser(userId int, input entities.UpdateUserInput) error {
+	if err := input.Validate(); err != nil {
+		return err
+	}
 	return serv.repo.UpdateUser(userId, input)
 }
 

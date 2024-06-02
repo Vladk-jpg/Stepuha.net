@@ -32,3 +32,14 @@ func (repos *AuthPostgres) GetUser(username, password string) (entities.User, er
 
 	return user, err
 }
+
+func (repos *AuthPostgres) CheckIfFrozen(userId int) (bool, error) {
+	query := fmt.Sprintf("SELECT gd.is_frozen FROM %s gd WHERE gd.id = $1", UsersTable)
+	var isFrozen bool
+	err := repos.db.Get(&isFrozen, query, userId)
+	print(isFrozen)
+	if err != nil {
+		return false, err
+	}
+	return isFrozen, nil
+}

@@ -17,7 +17,6 @@ func (handl *Handler) getRandomGoods(ctx *gin.Context) {
 		newErrorResponse(ctx, http.StatusBadRequest, "could not get user id")
 		return
 	}
-
 	goods, err := handl.services.GetRandomGoods(userId)
 	if err != nil {
 		newErrorResponse(ctx, http.StatusInternalServerError, err.Error())

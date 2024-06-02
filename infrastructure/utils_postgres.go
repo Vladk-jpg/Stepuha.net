@@ -37,14 +37,3 @@ func (repos *SupplementaryPostgres) GetOwner(goodId int) (int, error) {
 
 	return ownerId, nil
 }
-
-func (repos *SupplementaryPostgres) CheckIfFrozen(userId int) (bool, error) {
-	query := fmt.Sprintf("SELECT gd.is_frozen FROM %s WHERE gd.id = $1", UsersTable)
-	var isFrozen bool
-	err := repos.db.Get(&isFrozen, query, userId)
-	print(isFrozen)
-	if err != nil {
-		return false, err
-	}
-	return isFrozen, nil
-}

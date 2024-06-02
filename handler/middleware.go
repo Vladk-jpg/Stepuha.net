@@ -30,10 +30,6 @@ func (handl *Handler) userIdentity(ctx *gin.Context) {
 		newErrorResponse(ctx, http.StatusUnauthorized, err.Error())
 		return
 	}
-	if !handl.checkIfFrozen(userId) {
-		newErrorResponse(ctx, http.StatusUnauthorized, "Frozen")
-		return
-	}
 
 	ctx.Set(userCtx, userId)
 }
@@ -59,12 +55,4 @@ func (handl *Handler) checkBelonging(userId int, goodId int) error {
 		return err
 	}
 	return nil
-}
-
-func (handl *Handler) checkIfFrozen(userId int) bool {
-	isFrozen, err := handl.services.CheckIfFrozen(userId)
-	if err != nil {
-		return true
-	}
-	return isFrozen
 }

@@ -54,6 +54,7 @@ func (handl *Handler) updateUser(ctx *gin.Context) {
 		newErrorResponse(ctx, http.StatusBadRequest, err.Error())
 		return
 	}
+
 	err = handl.services.UpdateUser(id, input)
 	if err != nil {
 		newErrorResponse(ctx, http.StatusBadRequest, err.Error())

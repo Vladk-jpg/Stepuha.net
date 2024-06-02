@@ -40,6 +40,14 @@ func (serv *AuthService) GenerateToken(username, password string) (string, error
 		return "", err
 	}
 
+	isFrozen, err := serv.repos.CheckIfFrozen(user.ID)
+	if err != nil {
+		return "", err
+	}
+	if isFrozen {
+		return "", errors.New("user is frozen")
+	}
+
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, &tokenClaims{
 		jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(tokenTTL).Unix(),
@@ -73,4 +81,8 @@ func generateHashedPassword(password string) string {
 	hash := sha512.New()
 	hash.Write([]byte(password))
 	return fmt.Sprintf("%x", hash.Sum([]byte(saltCrypto)))
+}
+
+func (serv *AuthService) CheckIfFrozen(userId int) (bool, error) {
+	return serv.repos.CheckIfFrozen(userId)
 }

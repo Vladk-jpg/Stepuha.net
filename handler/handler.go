@@ -53,5 +53,7 @@ func (handl *Handler) RegisterRoutes(router *gin.Engine) {
 	moderApi := api.Group("/mod")
 	{
 		moderApi.POST("freeze/:id", handl.freezeUser)
+		moderApi.POST("unfreeze/:id", handl.unfreezeUser)
+		moderApi.DELETE(":userId/:goodId", handl.deleteUsersGood)
 	}
 }

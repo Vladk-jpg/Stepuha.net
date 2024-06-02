@@ -80,6 +80,7 @@ func (handl *Handler) deleteGood(ctx *gin.Context) {
 	id, err := strconv.Atoi(ctx.Param("id"))
 	if err != nil {
 		newErrorResponse(ctx, http.StatusBadRequest, "invalid id number")
+		return
 	}
 
 	err = handl.services.Good.Delete(userId, id)

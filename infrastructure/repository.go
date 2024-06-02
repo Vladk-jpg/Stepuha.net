@@ -8,6 +8,7 @@ import (
 type Authorization interface {
 	AddUser(user entities.User) (int, error)
 	GetUser(username, password string) (entities.User, error)
+	CheckIfFrozen(userId int) (bool, error)
 }
 
 type Good interface {
@@ -29,13 +30,13 @@ type User interface {
 type Supplementary interface {
 	GetRandomGoods(userId int) ([]entities.Good, error)
 	TransferMoney(senderId int, receiverId int, amount int) error
-	CheckIfFrozen(userId int) (bool, error)
 	CheckIfModer(userId int) (bool, error)
 	GetOwner(goodId int) (int, error)
 }
 
 type Moder interface {
 	FreezeUser(userId int) error
+	UnfreezeUser(userId int) error
 }
 
 type Repository struct {

@@ -26,6 +26,14 @@ type signInInput struct {
 	Password string `json:"password" binding:"required"`
 }
 
+func (handl *Handler) checkIfFrozen(userId int) bool {
+	isFrozen, err := handl.services.CheckIfFrozen(userId)
+	if err != nil {
+		return true
+	}
+	return isFrozen
+}
+
 func (handl *Handler) signIn(ctx *gin.Context) {
 	var input signInInput
 

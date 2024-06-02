@@ -8,6 +8,7 @@ import (
 type Authorization interface {
 	AddUser(user entities.User) (int, error)
 	GenerateToken(username, password string) (string, error)
+	CheckIfFrozen(userId int) (bool, error)
 	ParseToken(token string) (int, error)
 }
 
@@ -31,12 +32,12 @@ type Supplementary interface {
 	GetRandomGoods(userId int) ([]entities.Good, error)
 	TransferMoney(senderId int, receiver int, amount int) error
 	CheckIfModer(userId int) (bool, error)
-	CheckIfFrozen(userId int) (bool, error)
 	GetOwner(goodId int) (int, error)
 }
 
 type Moder interface {
 	FreezeUser(userId int) error
+	UnfreezeUser(userId int) error
 }
 
 type Service struct {

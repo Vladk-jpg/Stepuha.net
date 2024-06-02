@@ -15,3 +15,7 @@ func NewModerService(repo infrastructure.Moder) *ModerService {
 func (serv *ModerService) FreezeUser(userId int) error {
 	return serv.repo.FreezeUser(userId)
 }
+
+func (serv *ModerService) UnfreezeUser(userId int) error {
+	return serv.repo.UnfreezeUser(userId)
+}

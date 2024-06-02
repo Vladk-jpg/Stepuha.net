@@ -34,10 +34,7 @@ func (serv *GoodService) Update(userId int, goodId int, input entities.UpdateGoo
 		return err
 	}
 	err := serv.repo.Update(userId, goodId, input)
-	if err != nil {
-		return err
-	}
-	return nil
+	return err
 }
 
 func (serv *GoodService) Buy(userId int, goodId int) error {

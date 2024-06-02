@@ -65,10 +65,29 @@ func (repos *GoodPostgres) GetGoodById(userId int, goodId int) (entities.Good, e
 }
 
 func (repos *GoodPostgres) Delete(userId int, goodId int) error {
-	query := fmt.Sprintf("DELETE FROM %s gd USING %s ugd WHERE gd.id = ugd.good_id AND ugd.user_id=$1 AND ugd.good_id=$2",
+	tx, err := repos.db.Begin()
+	if err != nil {
+		return err
+	}
+
+	deleteFromMainTableQuery := fmt.Sprintf("DELETE FROM %s gd USING %s ugd WHERE gd.id = ugd.good_id AND ugd.user_id=$1 AND ugd.good_id=$2",
 		GoodsTable, UsersGoodsTable)
-	_, err := repos.db.Exec(query, userId, goodId)
-	return err
+	rows, err := tx.Exec(deleteFromMainTableQuery, userId, goodId)
+	if err != nil {
+		return err
+	}
+	affectedRows, _ := rows.RowsAffected()
+	if affectedRows == 0 {
+		return errors.New("no such good belonging to user")
+	}
+
+	deleteFromRelationsTableQuery := fmt.Sprintf("DELETE FROM %s ugd WHERE ugd.user_id = $1 AND ugd.good_id = $2", UsersGoodsTable)
+	rows, err = tx.Exec(deleteFromRelationsTableQuery, userId, goodId)
+	if err != nil {
+		return err
+	}
+
+	return tx.Commit()
 }
 
 func (repos *GoodPostgres) Update(userId int, goodId int, input entities.UpdateGoodInput) error {
