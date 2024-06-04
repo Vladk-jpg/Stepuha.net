@@ -10,18 +10,23 @@ func (handl *Handler) freezeUser(ctx *gin.Context) {
 	id, err := strconv.Atoi(ctx.Param("id"))
 	if err != nil {
 		newErrorResponse(ctx, http.StatusBadRequest, "invalid id number")
+		return
 	}
 	isModer, err := handl.services.CheckIfModer(id)
+	print(isModer)
 	if err != nil {
 		newErrorResponse(ctx, http.StatusInternalServerError, err.Error())
+		return
 	}
 	if !isModer {
 		newErrorResponse(ctx, http.StatusForbidden, "user hasn't got permissions")
+		return
 	}
 
 	err = handl.services.FreezeUser(id)
 	if err != nil {
 		newErrorResponse(ctx, http.StatusInternalServerError, err.Error())
+		return
 	}
 
 	ctx.JSON(http.StatusOK, statusResponse{

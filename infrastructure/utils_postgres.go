@@ -18,9 +18,10 @@ func (repos *GoodPostgres) CheckBelonging(userId int, goodId int) error {
 }
 
 func (repos *SupplementaryPostgres) CheckIfModer(userId int) (bool, error) {
-	query := fmt.Sprintf("SELECT gd.is_moderator FROM %s WHERE gd.id = $1", UsersTable)
+	query := fmt.Sprintf("SELECT is_moderator FROM %s WHERE id = $1", UsersTable)
 	var isModer bool
 	err := repos.db.Get(&isModer, query, userId)
+	print(userId)
 	if err != nil {
 		return false, err
 	}
