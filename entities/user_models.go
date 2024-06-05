@@ -29,7 +29,7 @@ type YourUser struct {
 	Surname     string `json:"surname" db:"surname" binding:"required"`
 	Teacher     string `json:"teacher" db:"teacher" binding:"required" `
 	Money       int    `json:"money" db:"money" binding:"-"`
-	IsModerator bool   `json:"-" db:"is_moderator"`
+	IsModerator bool   `json:"is_moderator" db:"is_moderator"`
 	IsFrozen    bool   `json:"-" db:"is_frozen"`
 }
 

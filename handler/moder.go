@@ -7,13 +7,13 @@ import (
 )
 
 func (handl *Handler) freezeUser(ctx *gin.Context) {
+	userId, err := getUserId(ctx)
 	id, err := strconv.Atoi(ctx.Param("id"))
 	if err != nil {
 		newErrorResponse(ctx, http.StatusBadRequest, "invalid id number")
 		return
 	}
-	isModer, err := handl.services.CheckIfModer(id)
-	print(isModer)
+	isModer, err := handl.services.CheckIfModer(userId)
 	if err != nil {
 		newErrorResponse(ctx, http.StatusInternalServerError, err.Error())
 		return
