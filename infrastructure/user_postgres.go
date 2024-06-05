@@ -24,7 +24,7 @@ func (repos *UserPostgres) GetUserById(userId int) (entities.User, error) {
 
 func (repos *UserPostgres) GetYourUser(userId int) (entities.YourUser, error) {
 	var user entities.YourUser
-	query := fmt.Sprintf("SELECT id, name, username, surname, teacher, money FROM %s gd WHERE gd.id=$1", UsersTable)
+	query := fmt.Sprintf("SELECT id, name, username, surname, teacher, money, is_moderator FROM %s gd WHERE gd.id=$1", UsersTable)
 	err := repos.db.Get(&user, query, userId)
 
 	return user, err
