@@ -24,8 +24,8 @@ func (repos *AuthPostgres) AddUser(user entities.User) (int, error) {
 	user.Money = DefaultMoneyCount
 	user.IsModerator = DefaultIsModerator
 	user.IsFrozen = DefaultIsFrozen
-	query := fmt.Sprintf("INSERT INTO %s (username, name, surname, teacher, money, password_hash) values ($1, $2, $3, $4, $5, $6) RETURNING id", UsersTable)
-	row := repos.db.QueryRow(query, user.Username, user.Name, user.Surname, user.Teacher, user.Money, user.Password)
+	query := fmt.Sprintf("INSERT INTO %s (username, name, surname, teacher, money, password_hash, is_moderator, is_frozen) values ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id", UsersTable)
+	row := repos.db.QueryRow(query, user.Username, user.Name, user.Surname, user.Teacher, user.Money, user.Password, user.IsModerator, user.IsFrozen)
 	if err := row.Scan(&id); err != nil {
 		return 0, err
 	}
